@@ -59,7 +59,8 @@ class PHALP(nn.Module):
         self.setup_detectron2()
         
         # create a visualizer
-        self.setup_visualizer()
+        if cfg.render.enable:
+            self.setup_visualizer()
         
         # move to device
         self.to(self.device)
