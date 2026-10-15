@@ -147,6 +147,10 @@ class Renderer:
         self.add_lighting(scene, camera_node)
         
         color, rend_depth = self.renderer.render(scene, flags=pyrender.RenderFlags.RGBA)
+        if color.shape[-1] == 3:
+            alpha = (rend_depth > 0.0).astype(np.uint8) * 255
+            alpha = np.expand_dims(alpha, axis=-1)
+            color = np.concatenate([color, alpha], axis=-1)
         color = color.astype(np.float32) / 255.0
         
         return color
